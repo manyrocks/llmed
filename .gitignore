@@ -1,0 +1,13 @@
+# Build outputs
+bin/
+obj/
+*.user
+
+# IDE
+.vs/
+.idea/
+*.suo
+
+# Test results
+TestResults/
+coverage.*
