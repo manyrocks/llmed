@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Llmed.Tests" />
+  </ItemGroup>
+
 </Project>
