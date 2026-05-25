@@ -26,6 +26,27 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
+    public static MediatorBuilder AddKeyedMediator(
+        this IServiceCollection services,
+        object serviceKey,
+        params Assembly[] handlerAssemblies)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(serviceKey);
+        ArgumentNullException.ThrowIfNull(handlerAssemblies);
+
+        var builder = new MediatorBuilder(services, serviceKey);
+
+        RegisterHandlersFromAssemblies(services, handlerAssemblies, serviceKey);
+
+        // Same closure-capture pattern as the unkeyed variant — see AddMediator
+        // for why we don't put MediatorBuilder in DI itself.
+        services.AddKeyedSingleton<IMediator>(serviceKey, (sp, _) =>
+            new Mediator(sp, serviceKey, builder.BehaviorTypes));
+
+        return builder;
+    }
+
     internal static void RegisterHandlersFromAssemblies(
         IServiceCollection services,
         Assembly[] assemblies,
