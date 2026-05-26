@@ -33,7 +33,9 @@ public class ConcurrentSendStressTests
         await using var sp = services.BuildServiceProvider();
 
         var mediator = sp.GetRequiredService<IMediator>();
-        var concrete = (Mediator)mediator;
+        // Use Assert.IsType so a future refactor that decorates IMediator fails with
+        // a clear assertion rather than a confusing InvalidCastException.
+        var concrete = Assert.IsType<Mediator>(mediator);
 
         const int total = 1000;
         var tasks = new Task<int>[total];
